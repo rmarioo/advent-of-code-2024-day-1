@@ -12,11 +12,12 @@ function distanceSorted({ sortedList1, sortedList2 }) {
    return sortedList1.map((val, i) => Math.abs(val - sortedList2[i]));
 }
 
-const distanceList = _.flow(
-    sortLists,        // Step 1: Sort the lists
-    distanceSorted    // Step 2: Compute distances
+const sumOfDistance= _.flow(
+    sortLists,
+    distanceSorted,
+    _.sum
 );
 
 module.exports = {
-   distanceList
+   sumOfDistance
 };

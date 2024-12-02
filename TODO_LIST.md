@@ -5,5 +5,5 @@
 [X] - given two sorted list of 2 numbers calculate the distance   
 [X] - given two unsorted list of 2 numbers calculate the distance  
 [X] - given two unsorted list of 2 numbers calculate the sum of distances
-[ ] - parse the input file in object of 2 lists
-[ ] - given input file calculate the sum of distances
+[X] - parse the input file in object of 2 lists
+[X] - given input file calculate the sum of distances

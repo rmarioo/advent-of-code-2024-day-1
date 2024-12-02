@@ -3,6 +3,18 @@ const fs = require('fs');
 const path = require('path');
 
 
+const totalSimilarityScoreFromInputFile= _.flow(
+    readListsFromFile,
+    sortLists,
+    similarityScore,
+    _.sum
+);
+const totalSimilarityScore= _.flow(
+    sortLists,
+    similarityScore,
+    _.sum
+);
+
 const sumOfDistanceFromInputFile= _.flow(
     readListsFromFile,
     sortLists,
@@ -23,37 +35,42 @@ function readListsFromFile() {
    // Read the entire file synchronously
    const fileContent = fs.readFileSync(filePath, 'utf-8');
 
-   const list1 = [];
-   const list2 = [];
+   const left = [];
+   const right = [];
 
    // Process each line
    const lines = fileContent.split(/\r?\n/); // Split by line breaks
    for (const line of lines) {
       if (line.trim()) { // Skip empty lines
          const numbers = parseLine(line); // Parse the line into numbers
-         list1.push(numbers[0]);
-         list2.push(numbers[1]);
+         left.push(numbers[0]);
+         right.push(numbers[1]);
       }
    }
 
-   return { list1, list2 };
+   return { left, right };
 }
 
-function sortLists ({ list1, list2 })  {
+function sortLists ({ left, right })  {
    return {
-      sortedList1: [...list1].sort(), // Sort list1 without mutating the original
-      sortedList2: [...list2].sort(), // Sort list2 without mutating the original
+      left: [...left].sort(), // Sort left without mutating the original
+      right: [...right].sort(), // Sort right without mutating the original
    };
 }
 
-function distanceFromSortedLists({ sortedList1, sortedList2 }) {
-   return sortedList1.map((val, i) => Math.abs(val - sortedList2[i]));
+function distanceFromSortedLists({ left, right }) {
+   return left.map((val, i) => Math.abs(val - right[i]));
 }
 
 function parseLine(line) {
    return line.trim().split(/\s+/)
 }
 
+function similarityScore({ left, right }) {
+   return left.map((val, i) => val * right.filter(num => num === val).length)
+}
+
+
 module.exports = {
-   sumOfDistance,readListsFromFile,sumOfDistanceFromInputFile
+   sumOfDistance,sumOfDistanceFromInputFile,totalSimilarityScore,totalSimilarityScoreFromInputFile
 };

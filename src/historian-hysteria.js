@@ -67,7 +67,7 @@ function parseLine(line) {
 }
 
 function similarityScore({ left, right }) {
-   return left.map((val, i) => val * right.filter(num => num === val).length)
+   return left.map((val) => val * right.filter(num => num === val).length)
 }
 
 
